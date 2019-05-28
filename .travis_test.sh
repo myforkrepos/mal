@@ -4,14 +4,32 @@ set -ex
 
 ACTION=${1}
 IMPL=${2}
-MAL_IMPL=${3:-js}
 
-mode_var=${IMPL}_MODE
+# Special tags/branches
+case "${TRAVIS_BRANCH}" in
+self-host-test)
+    MAL_IMPL=${IMPL}
+    IMPL=mal
+    ;;
+esac
+
+mode_var=${MAL_IMPL:-${IMPL}}_MODE
 mode_val=${!mode_var}
 
 echo "ACTION: ${ACTION}"
 echo "IMPL: ${IMPL}"
 echo "MAL_IMPL: ${MAL_IMPL}"
+
+if [ "${MAL_IMPL}" ]; then
+    if [ "${NO_SELF_HOST}" ]; then
+        echo "Skipping ${MAL_IMPL} self-host"
+        return 0
+    fi
+    if [ "${ACTION}" = "perf" -a "${NO_SELF_HOST_PERF}" ]; then
+        echo "Skipping perf test for ${MAL_IMPL} self-host"
+        return 0
+    fi
+fi
 
 # If NO_DOCKER is blank then launch use a docker image, otherwise use
 # the Travis image/tools directly.
