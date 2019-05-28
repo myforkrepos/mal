@@ -110,10 +110,13 @@ script:
   - ./.travis_build.sh
 
   # special branches
-  - /bin/echo "TRAVIS_BRANCH: ${TRAVIS_BRANCH}"
-  - case "${TRAVIS_BRANCH}" in self-host-test) ./.travis_test.sh test mal ${IMPL} ;; *) ./.travis_test.sh test ${IMPL} ;; esac
+  - case "${TRAVIS_BRANCH}" in self-host-test) DO_MAL=mal ;; esac
+  - for x in 1; do echo "DO_MAL: ${DO_MAL}"; done
+
+  # Test
+  - ./.travis_test.sh test ${DO_MAL} ${IMPL}
   - cat test.err || true
 
   # Performance tests
-  - if [ -z "${NO_PERF}" ]; then ./.travis_test.sh perf ${IMPL}; fi
+  - if [ -z "${NO_PERF}" ]; then ./.travis_test.sh perf ${DO_MAL} ${IMPL}; fi
   - cat perf.err || true
