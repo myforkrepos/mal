@@ -110,7 +110,7 @@ script:
   - ./.travis_build.sh
 
   # special branches
-  - echo "TRAVIS_BRANCH: ${TRAVIS_BRANCH}"
+  - /bin/echo "TRAVIS_BRANCH: ${TRAVIS_BRANCH}"
   - case "${TRAVIS_BRANCH}" in self-host-test) ./.travis_test.sh test mal ${IMPL} ;; *) ./.travis_test.sh test ${IMPL} ;; esac
   - cat test.err || true
 
