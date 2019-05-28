@@ -111,7 +111,6 @@ script:
 
   # special branches
   - case "${TRAVIS_BRANCH}" in self-host-test) DO_MAL=mal ;; esac
-  - for x in 1; do echo "DO_MAL: ${DO_MAL}"; done
 
   # Test
   - ./.travis_test.sh test ${DO_MAL} ${IMPL}
