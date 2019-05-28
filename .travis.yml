@@ -110,8 +110,8 @@ script:
   - ./.travis_build.sh
 
   # special branches
-  - git rev-parse --abbrev-ref HEAD
-  - case "$(git rev-parse --abbrev-ref HEAD)" in self-host-test) ./.travis_test.sh test mal ${IMPL} ;; *) ./.travis_test.sh test ${IMPL} ;; esac
+  - echo "TRAVIS_BRANCH: ${TRAVIS_BRANCH}"
+  - case "${TRAVIS_BRANCH}" in self-host-test) ./.travis_test.sh test mal ${IMPL} ;; *) ./.travis_test.sh test ${IMPL} ;; esac
   - cat test.err || true
 
   # Performance tests
